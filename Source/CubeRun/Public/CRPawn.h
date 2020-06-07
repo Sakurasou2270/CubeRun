@@ -6,7 +6,9 @@
 #include "GameFramework/Pawn.h"
 #include "CRPawn.generated.h"
 
-class UStaticMeshComponent;
+class USpringArmComponent;
+class UCameraComponent;
+class ACRGameMode;
 
 UCLASS()
 class CUBERUN_API ACRPawn : public APawn
@@ -27,6 +29,40 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(VisibleAnywhere, Category = "Setup")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Setup")
 	UStaticMeshComponent *Cube;
+
+	//! Pointer is not getting all information just making a ref in memory
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Setup")
+	USpringArmComponent *SpringArm;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Setup")
+	UCameraComponent *Camera;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Floats")
+	float ForwardForce;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Floats")
+	float SideForce;
+
+	ACRGameMode *GameMode;
+	bool bGameEnded;
+	float Mass;
+	float DeltaSeconds;
+
+	UFUNCTION()
+	void OnHit(
+		class UPrimitiveComponent *MyComp,
+		AActor *Other,
+		class UPrimitiveComponent *OtherComp,
+		FVector NormalImpulse,
+		const FHitResult &Hit);
+
+	UFUNCTION()
+	void OnComponentOverlap(
+		class UPrimitiveComponent *OverlappedComp, class AActor *OtherActor, class UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult);
+
+	void GameEnded();
+	void MoveRight(float Val);
+	void EndGame();
 };
