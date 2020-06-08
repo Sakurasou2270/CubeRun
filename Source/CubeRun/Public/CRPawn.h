@@ -9,6 +9,7 @@
 class USpringArmComponent;
 class UCameraComponent;
 class ACRGameMode;
+class UUserWidget;
 
 UCLASS()
 class CUBERUN_API ACRPawn : public APawn
@@ -45,22 +46,35 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Floats")
 	float SideForce;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UMG")
+	TSubclassOf<UUserWidget> DefaultHUD;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UMG")
+	UUserWidget *HUD;
+
+
 	ACRGameMode *GameMode;
 	bool bGameEnded;
 	float Mass;
 	float DeltaSeconds;
+	FTimerHandle EndGameTimer;
 
 	UFUNCTION()
 	void OnHit(
-		class UPrimitiveComponent *MyComp,
-		AActor *Other,
-		class UPrimitiveComponent *OtherComp,
+		UPrimitiveComponent *HitComp,
+		AActor *OtherActor,
+		UPrimitiveComponent *OtherComp,
 		FVector NormalImpulse,
 		const FHitResult &Hit);
 
 	UFUNCTION()
 	void OnComponentOverlap(
-		class UPrimitiveComponent *OverlappedComp, class AActor *OtherActor, class UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult);
+		class UPrimitiveComponent *OverlappedComp,
+		class AActor *OtherActor,
+		class UPrimitiveComponent *OtherComp,
+		int32 OtherBodyIndex,
+		bool bFromSweep,
+		const FHitResult &SweepResult);
 
 	void GameEnded();
 	void MoveRight(float Val);

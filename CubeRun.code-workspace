@@ -10,7 +10,13 @@
 		}
 	],
 	"settings": {
-		"typescript.tsc.autoDetect": "off"
+		"typescript.tsc.autoDetect": "off",
+		"files.associations": {
+			"scoped_allocator": "cpp",
+			"xmemory0": "cpp",
+			"xmemory": "cpp",
+			"memory": "cpp"
+		}
 	},
 	"extensions": {
 		"recommendations": [
